@@ -11,9 +11,9 @@ import {
 } from '@mui/material';
 import {
   SportsEsports as GameIcon,
+  Sports as PongIcon,
   Description as DocsIcon,
   School as LearnIcon,
-  ViewModule as TemplateIcon,
   RocketLaunch as DeployIcon,
 } from '@mui/icons-material';
 import Image from 'next/image';
@@ -115,7 +115,8 @@ export default function Home() {
             gridTemplateColumns: {
               xs: '1fr',
               sm: 'repeat(2, 1fr)',
-              md: 'repeat(4, 1fr)',
+              md: 'repeat(2, 1fr)',
+              lg: 'repeat(4, 1fr)',
             },
             gap: { xs: 2, md: 3 },
             width: '100%',
@@ -128,6 +129,13 @@ export default function Home() {
               description: 'Play an interactive tic-tac-toe game built with Material-UI!',
               href: '/tic-tac-toe',
               icon: <GameIcon />,
+              isInternal: true,
+            },
+            {
+              title: 'Pong Game',
+              description: 'Classic Pong arcade game with AI opponent and smooth gameplay!',
+              href: '/pong',
+              icon: <PongIcon />,
               isInternal: true,
             },
             {
