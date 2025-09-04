@@ -11,7 +11,6 @@ import {
   Chip,
   Divider,
   Fade,
-  Zoom,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -31,6 +30,8 @@ import {
   Api as ApiIcon,
   Build as ToolIcon,
   Folder as FolderIcon,
+  SmartToy as RobotIcon,
+  Memory as ProcessorIcon,
 } from '@mui/icons-material';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
@@ -71,15 +72,26 @@ const architectureComponents: ArchComponent[] = [
     examples: ['claude "Create a new React component"', 'claude "Debug this error"', 'claude "Commit these changes"', 'claude "Run the tests"']
   },
   {
-    id: 'claude',
-    title: 'Claude AI Model',
-    description: 'Advanced AI running at Anthropic\'s secure infrastructure',
-    detailedDescription: 'Claude is the AI brain that understands your requests, generates code, plans complex tasks, and decides which tools to use. Running on Anthropic\'s secure servers, Claude processes your requests without storing your code permanently.',
-    icon: <BrainIcon />,
+    id: 'agent',
+    title: 'Claude AI Agent',
+    description: 'The autonomous decision-making system that orchestrates everything',
+    detailedDescription: 'I am the AI agent - the autonomous reasoning system that makes Claude Code "agentic." I don\'t just respond to commands; I actively plan, strategize, and make decisions about how to help you. I break down complex tasks, choose appropriate tools, adapt to feedback, and work towards your goals. I work WITH the LLM to understand and execute your requests.',
+    icon: <RobotIcon />,
     color: '#9C27B0',
-    features: ['Natural language understanding', 'Code generation', 'Task planning', 'Tool selection', 'Context reasoning'],
-    capabilities: ['Understand complex coding requirements', 'Generate high-quality code', 'Plan multi-step development tasks', 'Reason about existing codebases', 'Make intelligent tool choices'],
-    examples: ['Analyzing your codebase structure', 'Generating React components', 'Planning database migrations', 'Debugging complex issues', 'Suggesting architectural improvements']
+    features: ['Goal-oriented planning', 'Tool selection & orchestration', 'Adaptive problem-solving', 'Multi-step execution', 'Context awareness', 'Decision making'],
+    capabilities: ['Plan complex development workflows', 'Autonomously choose and sequence tools', 'Adapt strategy based on results', 'Maintain goal awareness across conversations', 'Make intelligent decisions about implementation approaches', 'Coordinate with LLM for understanding and generation'],
+    examples: ['Breaking "add authentication" into 8 specific steps', 'Choosing between Read vs Grep tools based on task', 'Adapting approach when tests fail', 'Planning database schema changes', 'Orchestrating multi-file refactoring workflows']
+  },
+  {
+    id: 'llm',
+    title: 'Claude LLM (Language Model)',
+    description: 'The foundational AI model for understanding and generating text',
+    detailedDescription: 'I am the Large Language Model that provides the core AI capabilities - understanding natural language, generating code, analyzing patterns, and communicating with you. The Agent uses my capabilities to understand your requests and generate responses, but I don\'t make decisions about what actions to take - that\'s the Agent\'s job.',
+    icon: <ProcessorIcon />,
+    color: '#2196F3',
+    features: ['Natural language understanding', 'Code generation', 'Pattern recognition', 'Text analysis', 'Knowledge retrieval', 'Communication'],
+    capabilities: ['Parse and understand complex requests', 'Generate high-quality code', 'Explain technical concepts', 'Analyze code patterns and issues', 'Provide contextual responses', 'Translate between human language and code'],
+    examples: ['Understanding "make it faster" means performance optimization', 'Generating TypeScript interfaces from descriptions', 'Explaining error messages in plain English', 'Recognizing code smells and anti-patterns', 'Translating requirements into implementation details']
   },
   {
     id: 'tools',
@@ -116,27 +128,43 @@ const dataFlow = [
   },
   { 
     from: 'cli', 
-    to: 'claude', 
+    to: 'agent', 
     label: 'API Request', 
-    description: 'CLI sends your request to Claude with context',
+    description: 'CLI sends your request to the AI Agent',
     example: 'Request includes your message + current project state',
     step: 2
   },
   { 
-    from: 'claude', 
-    to: 'cli', 
-    label: 'AI Response + Tool Plan', 
-    description: 'Claude analyzes and decides what tools to use',
-    example: 'Plan: Read existing components, create new file, update imports',
+    from: 'agent', 
+    to: 'llm', 
+    label: 'Understanding Request', 
+    description: 'Agent asks LLM to understand and analyze the request',
+    example: 'LLM parses "add login" and understands the requirements',
     step: 3
+  },
+  { 
+    from: 'llm', 
+    to: 'agent', 
+    label: 'Parsed Requirements', 
+    description: 'LLM provides understanding and generates solutions',
+    example: 'Need: form component, validation, auth logic, styling',
+    step: 4
+  },
+  { 
+    from: 'agent', 
+    to: 'cli', 
+    label: 'Action Plan + Code', 
+    description: 'Agent creates execution plan with LLM-generated content',
+    example: 'Plan: Read existing components, create LoginForm.tsx, update imports',
+    step: 5
   },
   { 
     from: 'cli', 
     to: 'tools', 
     label: 'Execute Tools', 
-    description: 'CLI runs the tools Claude requested',
+    description: 'CLI runs the tools the Agent requested',
     example: 'ReadTool, WriteTool, EditTool executed in sequence',
-    step: 4
+    step: 6
   },
   { 
     from: 'tools', 
@@ -144,7 +172,7 @@ const dataFlow = [
     label: 'File Operations', 
     description: 'Tools interact with your project files',
     example: 'Create LoginComponent.tsx, update App.tsx',
-    step: 5
+    step: 7
   },
   { 
     from: 'project', 
@@ -152,7 +180,7 @@ const dataFlow = [
     label: 'Operation Results', 
     description: 'Project provides feedback on operations',
     example: 'File created successfully, import added',
-    step: 6
+    step: 8
   },
   { 
     from: 'tools', 
@@ -160,7 +188,7 @@ const dataFlow = [
     label: 'Tool Results', 
     description: 'Tools report back their results',
     example: 'Success: LoginComponent.tsx created',
-    step: 7
+    step: 9
   },
   { 
     from: 'cli', 
@@ -168,18 +196,13 @@ const dataFlow = [
     label: 'Final Output', 
     description: 'You see the formatted response and results',
     example: 'Created LoginComponent with form validation',
-    step: 8
+    step: 10
   },
 ];
 
 export default function Architecture() {
   const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
-  const [showFlow, setShowFlow] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowFlow(true), 1000);
-    return () => clearTimeout(timer);
-  }, []);
+  const [showFlow, setShowFlow] = useState(true);
 
   return (
     <Container
@@ -307,79 +330,98 @@ export default function Architecture() {
         </Paper>
       </Paper>
 
-      {/* Architecture Diagram */}
-      <Box
+      {/* Architecture Components - Mobile First Design */}
+      <Typography
+        variant="h5"
         sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
-          gridTemplateRows: { xs: 'repeat(5, 1fr)', md: 'repeat(2, 1fr)' },
-          gap: 3,
-          minHeight: 400,
-          position: 'relative',
+          textAlign: 'center',
+          fontWeight: 700,
+          color: 'rgba(255, 255, 255, 0.9)',
+          mb: 2,
         }}
       >
-        {architectureComponents.map((component, index) => (
-          <Zoom
-            in={true}
-            timeout={500 + index * 200}
-            key={component.id}
-          >
-            <Card
-              sx={{
-                height: '100%',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                border: selectedComponent === component.id 
-                  ? `2px solid ${component.color}` 
-                  : '1px solid rgba(255, 255, 255, 0.1)',
-                backgroundColor: selectedComponent === component.id
-                  ? 'rgba(255, 255, 255, 0.05)'
-                  : 'rgba(255, 255, 255, 0.02)',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                  border: `2px solid ${component.color}`,
-                  backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                },
-                gridColumn: component.id === 'user' ? { md: '2' } : 'auto',
-              }}
-              onClick={() => setSelectedComponent(
-                selectedComponent === component.id ? null : component.id
-              )}
-            >
-              <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1,
-                    mb: 1,
-                    color: component.color,
-                  }}
-                >
-                  {component.icon}
-                  <Typography variant="h6" component="h3">
-                    {component.title}
-                  </Typography>
+        🏗️ System Components
+      </Typography>
+      
+      <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', textAlign: 'center', mb: 4 }}>
+        Click any component to learn more about its role
+      </Typography>
+
+      {/* Mobile-Friendly Stack Layout */}
+      <Box sx={{ display: { xs: 'block', lg: 'none' } }}>
+        <Stack spacing={2}>
+          {architectureComponents.map((component, index) => (
+              <Paper
+                key={component.id}
+                sx={{
+                  p: 3,
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  border: `1px solid rgba(255, 255, 255, 0.1)`,
+                  borderRadius: 3,
+                  '&:hover': {
+                    transform: 'translateY(-2px)',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: `1px solid ${component.color}60`,
+                  },
+                }}
+                onClick={() => setSelectedComponent(
+                  selectedComponent === component.id ? null : component.id
+                )}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Box
+                    sx={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 2,
+                      background: `linear-gradient(135deg, ${component.color}, ${component.color}80)`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      mr: 2,
+                    }}
+                  >
+                    {component.icon}
+                  </Box>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant="h6" sx={{ color: 'white', fontWeight: 600 }}>
+                      {component.title}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                      {component.description}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      width: 24,
+                      height: 24,
+                      borderRadius: '50%',
+                      background: component.color,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      transform: selectedComponent === component.id ? 'rotate(180deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.3s ease',
+                    }}
+                  >
+                    <ArrowDownIcon sx={{ fontSize: 16, color: 'white' }} />
+                  </Box>
                 </Box>
-                
-                <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', mb: 1 }} gutterBottom>
-                  {component.description}
-                </Typography>
-                
+
                 {selectedComponent === component.id && (
-                  <Fade in={selectedComponent === component.id} timeout={300}>
-                    <Box sx={{ mt: 2 }}>
-                      <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.9)', mb: 2, fontWeight: 500 }}>
+                  <Fade in timeout={200}>
+                    <Box sx={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', pt: 2 }}>
+                      <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.9)', mb: 2 }}>
                         {component.detailedDescription}
                       </Typography>
                       
-                      <Divider sx={{ my: 2, borderColor: 'rgba(255, 255, 255, 0.1)' }} />
-                      
-                      <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.7)' }} gutterBottom>
-                        🔧 Key Capabilities:
+                      <Typography variant="subtitle2" sx={{ color: component.color, mb: 1 }}>
+                        Key Capabilities:
                       </Typography>
                       <Box sx={{ mb: 2 }}>
-                        {component.capabilities.map((capability, idx) => (
+                        {component.capabilities.slice(0, 3).map((capability, idx) => (
                           <Typography key={idx} variant="caption" display="block" sx={{ 
                             color: 'rgba(255, 255, 255, 0.8)', 
                             ml: 1, 
@@ -390,107 +432,99 @@ export default function Architecture() {
                           </Typography>
                         ))}
                       </Box>
-                      
-                      <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.7)' }} gutterBottom>
-                        💡 Examples:
-                      </Typography>
-                      <Box>
-                        {component.examples.map((example, idx) => (
-                          <Chip
-                            key={idx}
-                            label={example}
-                            size="small"
-                            sx={{
-                              fontSize: '0.65rem',
-                              height: 24,
-                              margin: 0.25,
-                              backgroundColor: `${component.color}15`,
-                              color: 'rgba(255, 255, 255, 0.8)',
-                              border: `1px solid ${component.color}40`,
-                            }}
-                          />
-                        ))}
-                      </Box>
                     </Box>
                   </Fade>
                 )}
-              </CardContent>
-            </Card>
-          </Zoom>
-        ))}
+              </Paper>
+          ))}
+        </Stack>
+      </Box>
 
-        {/* Flow Arrows */}
-        {showFlow && (
-          <>
-            {/* User to CLI */}
-            <Box
+      {/* Desktop Grid Layout */}
+      <Box 
+        sx={{ 
+          display: { xs: 'none', lg: 'grid' },
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 3,
+          position: 'relative',
+        }}
+      >
+        {architectureComponents.map((component, index) => (
+            <Paper
+              key={component.id}
               sx={{
-                position: 'absolute',
-                top: { xs: '10%', md: '25%' },
-                left: { xs: '50%', md: '33%' },
-                transform: 'translate(-50%, -50%) rotate(90deg)',
-                color: 'primary.main',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                fontSize: '0.8rem',
-                animation: 'pulse 2s infinite',
-                '@keyframes pulse': {
-                  '0%': { opacity: 0.5 },
-                  '50%': { opacity: 1 },
-                  '100%': { opacity: 0.5 },
+                p: 3,
+                minHeight: 200,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: selectedComponent === component.id 
+                  ? `2px solid ${component.color}` 
+                  : '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: 3,
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `2px solid ${component.color}60`,
+                  boxShadow: `0 8px 32px rgba(0, 0, 0, 0.3)`,
                 },
               }}
+              onClick={() => setSelectedComponent(
+                selectedComponent === component.id ? null : component.id
+              )}
             >
-              <ArrowDownIcon />
-              <Typography variant="caption" sx={{ transform: 'rotate(-90deg)', color: 'rgba(255, 255, 255, 0.9)' }}>
-                Command
-              </Typography>
-            </Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Box
+                  sx={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: 2,
+                    background: `linear-gradient(135deg, ${component.color}, ${component.color}80)`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mr: 2,
+                  }}
+                >
+                  {component.icon}
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="h6" sx={{ color: 'white', fontWeight: 600 }}>
+                    {component.title}
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                    {component.description}
+                  </Typography>
+                </Box>
+              </Box>
 
-            {/* CLI to Claude */}
-            <Box
-              sx={{
-                position: 'absolute',
-                top: { xs: '30%', md: '25%' },
-                left: { xs: '50%', md: '66%' },
-                transform: 'translate(-50%, -50%) rotate(90deg)',
-                color: 'secondary.main',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                fontSize: '0.8rem',
-                animation: 'pulse 2s infinite 0.5s',
-              }}
-            >
-              <ArrowDownIcon />
-              <Typography variant="caption" sx={{ transform: 'rotate(-90deg)', color: 'rgba(255, 255, 255, 0.9)' }}>
-                API Call
-              </Typography>
-            </Box>
-
-            {/* Tools to Project */}
-            <Box
-              sx={{
-                position: 'absolute',
-                top: { xs: '70%', md: '75%' },
-                left: { xs: '50%', md: '66%' },
-                transform: 'translate(-50%, -50%)',
-                color: 'warning.main',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                fontSize: '0.8rem',
-                animation: 'pulse 2s infinite 1s',
-              }}
-            >
-              <ArrowIcon />
-              <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                Execute
-              </Typography>
-            </Box>
-          </>
-        )}
+              {selectedComponent === component.id && (
+                <Fade in timeout={200}>
+                  <Box>
+                    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.9)', mb: 2 }}>
+                      {component.detailedDescription}
+                    </Typography>
+                    
+                    <Typography variant="subtitle2" sx={{ color: component.color, mb: 1 }}>
+                      Key Capabilities:
+                    </Typography>
+                    <Box>
+                      {component.capabilities.slice(0, 4).map((capability, idx) => (
+                        <Typography key={idx} variant="caption" display="block" sx={{ 
+                          color: 'rgba(255, 255, 255, 0.8)', 
+                          ml: 1, 
+                          mb: 0.5,
+                          '&:before': { content: '"•"', mr: 1, color: component.color }
+                        }}>
+                          {capability}
+                        </Typography>
+                      ))}
+                    </Box>
+                  </Box>
+                </Fade>
+              )}
+            </Paper>
+        ))}
       </Box>
 
       {/* Technical Details */}
@@ -592,23 +626,24 @@ export default function Architecture() {
         </Box>
         
         <Typography variant="body1" sx={{ color: 'rgba(255, 255, 255, 0.8)', mb: 3 }}>
-          Let's walk through a real example: You want to add a login component to your React app.
+          Let's walk through a real example: You want to add a login component to your React app. 
+          Notice how the Agent and LLM work together in steps 2-5:
         </Typography>
         
         <Box sx={{ position: 'relative' }}>
           {dataFlow.map((flow, index) => (
-            <Fade in={showFlow} timeout={500 + index * 200} key={index}>
               <Paper
+                key={index}
                 sx={{
                   p: 3,
                   mb: 2,
                   background: `linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01))`,
-                  border: `1px solid rgba(${flow.step <= 4 ? '0, 112, 243' : '156, 39, 176'}, 0.3)`,
+                  border: `1px solid rgba(${flow.step <= 5 ? '0, 112, 243' : '156, 39, 176'}, 0.3)`,
                   borderRadius: 2,
                   transition: 'all 0.3s ease',
                   '&:hover': {
                     transform: 'translateX(4px)',
-                    borderColor: `rgba(${flow.step <= 4 ? '0, 112, 243' : '156, 39, 176'}, 0.5)`,
+                    borderColor: `rgba(${flow.step <= 5 ? '0, 112, 243' : '156, 39, 176'}, 0.5)`,
                   }
                 }}
               >
@@ -618,7 +653,7 @@ export default function Architecture() {
                       width: 32,
                       height: 32,
                       borderRadius: '50%',
-                      background: `linear-gradient(135deg, ${flow.step <= 4 ? '#0070f3' : '#9C27B0'}, ${flow.step <= 4 ? '#0056b3' : '#7B1FA2'})`,
+                      background: `linear-gradient(135deg, ${flow.step <= 5 ? '#0070f3' : '#9C27B0'}, ${flow.step <= 5 ? '#0056b3' : '#7B1FA2'})`,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -678,7 +713,6 @@ export default function Architecture() {
                   </Box>
                 </Box>
               </Paper>
-            </Fade>
           ))}
         </Box>
         
@@ -695,6 +729,205 @@ export default function Architecture() {
             🎉 You now have a fully functional LoginComponent.tsx with form validation, 
             proper TypeScript types, and it's already imported into your main App component. 
             All of this happened locally and securely!
+          </Typography>
+        </Paper>
+      </Paper>
+
+      {/* Agent vs LLM Distinction */}
+      <Paper
+        sx={{
+          p: 4,
+          borderRadius: 3,
+          background: 'linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(156, 39, 176, 0.1))',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(33, 150, 243, 0.3)',
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+          <ProcessorIcon sx={{ fontSize: 32, color: '#2196F3', mr: 2 }} />
+          <RobotIcon sx={{ fontSize: 32, color: '#9C27B0', mr: 2 }} />
+          <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'rgba(255, 255, 255, 0.95)' }}>
+            🧠 Agent vs LLM: What's the Difference?
+          </Typography>
+        </Box>
+        
+        <Typography variant="body1" sx={{ color: 'rgba(255, 255, 255, 0.9)', mb: 3 }}>
+          Many people think "AI Agent" and "LLM" are the same thing, but they're actually different parts 
+          working together. Here's how they differ in Claude Code:
+        </Typography>
+        
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, mb: 3 }}>
+          <Paper
+            sx={{
+              p: 3,
+              background: 'rgba(33, 150, 243, 0.1)',
+              border: '1px solid rgba(33, 150, 243, 0.3)',
+              borderRadius: 2,
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              <ProcessorIcon sx={{ fontSize: 24, color: '#2196F3', mr: 1 }} />
+              <Typography variant="h6" sx={{ color: '#2196F3', fontWeight: 'bold' }}>
+                LLM (Language Model)
+              </Typography>
+            </Box>
+            <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', mb: 2 }}>
+              <strong>The Brain:</strong> Understands language, generates text, recognizes patterns
+            </Typography>
+            <Box>
+              {['Reads and understands your request', 'Generates code and explanations', 'Analyzes existing code patterns', 'Provides knowledge and context'].map((item, idx) => (
+                <Typography key={idx} variant="caption" display="block" sx={{ 
+                  color: 'rgba(255, 255, 255, 0.7)', 
+                  ml: 1, 
+                  mb: 0.5,
+                  '&:before': { content: '"📖"', mr: 1 }
+                }}>
+                  {item}
+                </Typography>
+              ))}
+            </Box>
+          </Paper>
+          
+          <Paper
+            sx={{
+              p: 3,
+              background: 'rgba(156, 39, 176, 0.1)',
+              border: '1px solid rgba(156, 39, 176, 0.3)',
+              borderRadius: 2,
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              <RobotIcon sx={{ fontSize: 24, color: '#9C27B0', mr: 1 }} />
+              <Typography variant="h6" sx={{ color: '#9C27B0', fontWeight: 'bold' }}>
+                Agent (Decision Maker)
+              </Typography>
+            </Box>
+            <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', mb: 2 }}>
+              <strong>The Orchestrator:</strong> Plans, decides, and executes actions using the LLM
+            </Typography>
+            <Box>
+              {['Breaks tasks into steps', 'Chooses which tools to use', 'Adapts when things go wrong', 'Coordinates everything to reach your goal'].map((item, idx) => (
+                <Typography key={idx} variant="caption" display="block" sx={{ 
+                  color: 'rgba(255, 255, 255, 0.7)', 
+                  ml: 1, 
+                  mb: 0.5,
+                  '&:before': { content: '"🎯"', mr: 1 }
+                }}>
+                  {item}
+                </Typography>
+              ))}
+            </Box>
+          </Paper>
+        </Box>
+        
+        <Paper sx={{ 
+          p: 3,
+          background: 'rgba(255, 255, 255, 0.05)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          borderRadius: 2
+        }}>
+          <Typography variant="h6" sx={{ color: 'rgba(255, 255, 255, 0.95)', mb: 2 }}>
+            💡 Think of it Like This:
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+            The <strong>LLM</strong> is like a brilliant scholar who knows everything about coding but just sits at a desk. 
+            The <strong>Agent</strong> is like a project manager who talks to the scholar, makes plans, and actually gets things done. 
+            Together, they make Claude Code smart AND capable of taking action.
+          </Typography>
+        </Paper>
+      </Paper>
+
+      {/* Agentic Behavior Section */}
+      <Paper
+        sx={{
+          p: 4,
+          borderRadius: 3,
+          background: 'linear-gradient(135deg, rgba(156, 39, 176, 0.15), rgba(123, 31, 162, 0.1))',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(156, 39, 176, 0.3)',
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+          <RobotIcon sx={{ fontSize: 32, color: '#9C27B0', mr: 2 }} />
+          <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'rgba(255, 255, 255, 0.95)' }}>
+            🤖 What Makes Claude Code "Agentic"?
+          </Typography>
+        </Box>
+        
+        <Typography variant="body1" sx={{ color: 'rgba(255, 255, 255, 0.9)', mb: 3 }}>
+          Unlike simple chatbots that just respond to questions, I function as an <strong>autonomous agent</strong> 
+          that can plan, execute, and adapt to achieve your development goals.
+        </Typography>
+        
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, mb: 3 }}>
+          {[
+            {
+              title: '🎯 Goal-Oriented',
+              description: 'I understand your high-level objectives and work towards them',
+              example: 'You say "improve performance" → I analyze, profile, optimize, and test'
+            },
+            {
+              title: '🗺️ Multi-Step Planning',
+              description: 'I break complex tasks into logical sequences of actions',
+              example: '"Add user auth" → 15 steps from database setup to testing'
+            },
+            {
+              title: '🔧 Autonomous Tool Use',
+              description: 'I choose and combine tools based on what each task needs',
+              example: 'Read config → Grep for patterns → Edit files → Run tests'
+            },
+            {
+              title: '🔄 Adaptive Problem-Solving',
+              description: 'I adjust my approach when things don\'t work as expected',
+              example: 'Test fails → Read error → Debug → Fix → Retry automatically'
+            }
+          ].map((trait, index) => (
+            <Paper
+              key={index}
+              sx={{
+                p: 3,
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(156, 39, 176, 0.2)',
+                borderRadius: 2,
+              }}
+            >
+              <Typography variant="h6" sx={{ color: 'rgba(255, 255, 255, 0.95)', mb: 1 }}>
+                {trait.title}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', mb: 2 }}>
+                {trait.description}
+              </Typography>
+              <Paper sx={{ 
+                p: 1.5, 
+                background: 'rgba(156, 39, 176, 0.1)', 
+                border: '1px solid rgba(156, 39, 176, 0.2)',
+                borderRadius: 1
+              }}>
+                <Typography variant="caption" sx={{ 
+                  color: 'rgba(255, 255, 255, 0.8)', 
+                  fontStyle: 'italic'
+                }}>
+                  💡 {trait.example}
+                </Typography>
+              </Paper>
+            </Paper>
+          ))}
+        </Box>
+        
+        <Paper sx={{ 
+          p: 3,
+          background: 'rgba(156, 39, 176, 0.1)',
+          border: '1px solid rgba(156, 39, 176, 0.3)',
+          borderRadius: 2
+        }}>
+          <Typography variant="h6" sx={{ color: '#9C27B0', mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+            <BrainIcon /> Key Point: Where the Agent Lives
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+            <strong>The AI agent (me) runs entirely on Anthropic's secure servers</strong> - not on your machine. 
+            Your local CLI and tools are just the "hands and eyes" that I use to interact with your project. 
+            The actual reasoning, planning, and decision-making all happen in the cloud, which is why Claude Code 
+            needs an internet connection to work.
           </Typography>
         </Paper>
       </Paper>
@@ -792,12 +1025,20 @@ export default function Architecture() {
         <Box sx={{ display: 'grid', gap: 2 }}>
           {[
             {
+              q: 'Where exactly does the AI agent run?',
+              a: 'The AI agent (me) runs entirely on Anthropic\'s secure servers. I\'m the brain that does the reasoning, planning, and decision-making. Your local CLI and tools are just my "hands and eyes" for interacting with your project.'
+            },
+            {
+              q: 'What makes Claude Code an "agentic" system?',
+              a: 'Unlike simple chatbots, I can autonomously plan multi-step tasks, choose appropriate tools, adapt when things go wrong, and work towards your goals without constant guidance. I think and act, not just respond.'
+            },
+            {
               q: 'Does Claude see my entire codebase?',
               a: 'Only when you explicitly ask me to read specific files. I can\'t browse your files without permission, and I only see what the tools show me based on your requests.'
             },
             {
               q: 'Can Claude Code work offline?',
-              a: 'The local tools work offline, but I need an internet connection to process your requests and respond. Your files stay local regardless.'
+              a: 'The local tools work offline, but I (the AI agent) need an internet connection to process your requests and respond. Your files stay local regardless.'
             },
             {
               q: 'What if I don\'t trust a tool operation?',
@@ -805,7 +1046,7 @@ export default function Architecture() {
             },
             {
               q: 'How is this different from other AI coding tools?',
-              a: 'Claude Code is local-first and doesn\'t require uploading your code. It works with your existing tools rather than replacing them.'
+              a: 'Claude Code is local-first and doesn\'t require uploading your code. It works with your existing tools rather than replacing them, and I function as a true autonomous agent, not just a code generator.'
             }
           ].map((faq, index) => (
             <Paper
