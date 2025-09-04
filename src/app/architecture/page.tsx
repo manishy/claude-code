@@ -355,6 +355,7 @@ export default function Architecture() {
                 key={component.id}
                 sx={{
                   p: 3,
+                  minHeight: selectedComponent === component.id ? 'auto' : '120px',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
                   background: 'rgba(255, 255, 255, 0.02)',
@@ -370,7 +371,8 @@ export default function Architecture() {
                   selectedComponent === component.id ? null : component.id
                 )}
               >
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                {/* Fixed Header Area */}
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, minHeight: '70px' }}>
                   <Box
                     sx={{
                       width: 48,
@@ -381,15 +383,16 @@ export default function Architecture() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       mr: 2,
+                      flexShrink: 0,
                     }}
                   >
                     {component.icon}
                   </Box>
-                  <Box sx={{ flex: 1 }}>
-                    <Typography variant="h6" sx={{ color: 'white', fontWeight: 600 }}>
+                  <Box sx={{ flex: 1, minHeight: '50px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Typography variant="h6" sx={{ color: 'white', fontWeight: 600, mb: 0.5 }}>
                       {component.title}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', lineHeight: 1.4 }}>
                       {component.description}
                     </Typography>
                   </Box>
@@ -404,6 +407,7 @@ export default function Architecture() {
                       justifyContent: 'center',
                       transform: selectedComponent === component.id ? 'rotate(180deg)' : 'rotate(0deg)',
                       transition: 'transform 0.3s ease',
+                      flexShrink: 0,
                     }}
                   >
                     <ArrowDownIcon sx={{ fontSize: 16, color: 'white' }} />
@@ -454,7 +458,8 @@ export default function Architecture() {
               key={component.id}
               sx={{
                 p: 3,
-                minHeight: 200,
+                minHeight: selectedComponent === component.id ? '300px' : '200px',
+                maxHeight: selectedComponent === component.id ? 'none' : '200px',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
                 background: 'rgba(255, 255, 255, 0.02)',
@@ -462,6 +467,9 @@ export default function Architecture() {
                   ? `2px solid ${component.color}` 
                   : '1px solid rgba(255, 255, 255, 0.1)',
                 borderRadius: 3,
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
                 '&:hover': {
                   transform: 'translateY(-4px)',
                   background: 'rgba(255, 255, 255, 0.05)',
@@ -473,7 +481,8 @@ export default function Architecture() {
                 selectedComponent === component.id ? null : component.id
               )}
             >
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              {/* Fixed Header Area */}
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, minHeight: '80px' }}>
                 <Box
                   sx={{
                     width: 56,
@@ -484,15 +493,16 @@ export default function Architecture() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     mr: 2,
+                    flexShrink: 0,
                   }}
                 >
                   {component.icon}
                 </Box>
-                <Box sx={{ flex: 1 }}>
-                  <Typography variant="h6" sx={{ color: 'white', fontWeight: 600 }}>
+                <Box sx={{ flex: 1, minHeight: '60px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <Typography variant="h6" sx={{ color: 'white', fontWeight: 600, mb: 0.5 }}>
                     {component.title}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                  <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', lineHeight: 1.4 }}>
                     {component.description}
                   </Typography>
                 </Box>
