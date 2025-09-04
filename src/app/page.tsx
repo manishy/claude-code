@@ -1,95 +1,201 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+import {
+  Box,
+  Container,
+  Typography,
+  Card,
+  CardContent,
+  Link,
+  Chip,
+  Stack,
+} from '@mui/material';
+import {
+  Description as DocsIcon,
+  School as LearnIcon,
+  ViewModule as TemplateIcon,
+  RocketLaunch as DeployIcon,
+} from '@mui/icons-material';
+import Image from 'next/image';
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
+    <Container
+      maxWidth="lg"
+      sx={{
+        minHeight: '100vh',
+        py: { xs: 4, md: 8 },
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: { xs: 4, md: 6 },
+        }}
+      >
+        {/* Header Section */}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+            gap: { xs: 2, md: 4 },
+            mb: { xs: 2, md: 4 },
+          }}
+        >
+          <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+            <Typography variant="h6" color="text.secondary" gutterBottom>
+              Get started by editing{' '}
+              <Chip
+                label="src/app/page.tsx"
+                variant="outlined"
+                sx={{
+                  fontFamily: 'monospace',
+                  fontSize: '0.75rem',
+                  mx: 0.5,
+                }}
+              />
+            </Typography>
+          </Box>
+          
+          <Link
             href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
             target="_blank"
             rel="noopener noreferrer"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              textDecoration: 'none',
+              '&:hover': {
+                opacity: 0.8,
+              },
+            }}
           >
-            By{" "}
+            <Typography variant="body2" color="text.secondary">
+              By
+            </Typography>
             <Image
               src="/vercel.svg"
               alt="Vercel Logo"
-              className={styles.vercelLogo}
               width={100}
               height={24}
               priority
+              style={{ filter: 'invert(1)' }}
             />
-          </a>
-        </div>
-      </div>
+          </Link>
+        </Box>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+        {/* Logo Section */}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            mb: { xs: 4, md: 6 },
+          }}
         >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+          <Image
+            src="/next.svg"
+            alt="Next.js Logo"
+            width={180}
+            height={37}
+            priority
+            style={{ filter: 'invert(1)' }}
+          />
+        </Box>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+        {/* Cards Grid */}
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: 'repeat(2, 1fr)',
+              md: 'repeat(4, 1fr)',
+            },
+            gap: { xs: 2, md: 3 },
+            width: '100%',
+            maxWidth: 'lg',
+          }}
         >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+          {[
+            {
+              title: 'Docs',
+              description: 'Find in-depth information about Next.js features and API.',
+              href: 'https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app',
+              icon: <DocsIcon />,
+            },
+            {
+              title: 'Learn',
+              description: 'Learn about Next.js in an interactive course with quizzes!',
+              href: 'https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app',
+              icon: <LearnIcon />,
+            },
+            {
+              title: 'Templates',
+              description: 'Explore starter templates for Next.js.',
+              href: 'https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app',
+              icon: <TemplateIcon />,
+            },
+            {
+              title: 'Deploy',
+              description: 'Instantly deploy your Next.js site to a shareable URL with Vercel.',
+              href: 'https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app',
+              icon: <DeployIcon />,
+            },
+          ].map((item, index) => (
+            <Card
+              key={index}
+              component={Link}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                textDecoration: 'none',
+                color: 'inherit',
+                cursor: 'pointer',
+                minHeight: { xs: 140, md: 160 },
+              }}
+            >
+              <CardContent
+                sx={{
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 2,
+                  p: { xs: 2, md: 3 },
+                }}
+              >
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  {item.icon}
+                  <Typography variant="h6" component="h2">
+                    {item.title}
+                  </Typography>
+                  <Typography variant="h6" sx={{ ml: 'auto' }}>
+                    →
+                  </Typography>
+                </Stack>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    flexGrow: 1,
+                    fontSize: { xs: '0.875rem', md: '1rem' },
+                  }}
+                >
+                  {item.description}
+                </Typography>
+              </CardContent>
+            </Card>
+          ))}
+        </Box>
+      </Box>
+    </Container>
   );
 }
