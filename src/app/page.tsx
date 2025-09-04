@@ -10,6 +10,7 @@ import {
   Stack,
 } from '@mui/material';
 import {
+  SportsEsports as GameIcon,
   Description as DocsIcon,
   School as LearnIcon,
   ViewModule as TemplateIcon,
@@ -123,36 +124,40 @@ export default function Home() {
         >
           {[
             {
+              title: 'Tic Tac Toe',
+              description: 'Play an interactive tic-tac-toe game built with Material-UI!',
+              href: '/tic-tac-toe',
+              icon: <GameIcon />,
+              isInternal: true,
+            },
+            {
               title: 'Docs',
               description: 'Find in-depth information about Next.js features and API.',
               href: 'https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app',
               icon: <DocsIcon />,
+              isInternal: false,
             },
             {
               title: 'Learn',
               description: 'Learn about Next.js in an interactive course with quizzes!',
               href: 'https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app',
               icon: <LearnIcon />,
-            },
-            {
-              title: 'Templates',
-              description: 'Explore starter templates for Next.js.',
-              href: 'https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app',
-              icon: <TemplateIcon />,
+              isInternal: false,
             },
             {
               title: 'Deploy',
               description: 'Instantly deploy your Next.js site to a shareable URL with Vercel.',
               href: 'https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app',
               icon: <DeployIcon />,
+              isInternal: false,
             },
           ].map((item, index) => (
             <Card
               key={index}
               component={Link}
               href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
+              target={item.isInternal ? '_self' : '_blank'}
+              rel={item.isInternal ? '' : 'noopener noreferrer'}
               sx={{
                 height: '100%',
                 display: 'flex',
