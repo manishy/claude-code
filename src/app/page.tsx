@@ -11,7 +11,6 @@ import {
   Stack,
   Chip,
   Button,
-  Grid,
   Paper,
 } from '@mui/material';
 import {
@@ -124,9 +123,9 @@ export default function Home() {
 
           {/* Two-Column Layout: Claude Code Documentation vs Learning Apps */}
           <Box sx={{ width: '100%' }}>
-            <Grid container spacing={4}>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', lg: 'row' }, gap: 4 }}>
               {/* Claude Code Documentation Section */}
-              <Grid item xs={12} lg={6}>
+              <Box sx={{ flex: 1 }}>
                 <Box sx={{ height: '100%' }}>
                   <Typography
                     variant="h4"
@@ -212,10 +211,10 @@ export default function Home() {
                     </CardContent>
                   </Card>
                 </Box>
-              </Grid>
+              </Box>
 
               {/* Learning Apps Section */}
-              <Grid item xs={12} lg={6}>
+              <Box sx={{ flex: 1 }}>
                 <Box sx={{ height: '100%' }}>
                   <Typography
                     variant="h4"
@@ -321,8 +320,8 @@ export default function Home() {
                     ))}
                   </Stack>
                 </Box>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           </Box>
 
           {/* Learning Journey */}
