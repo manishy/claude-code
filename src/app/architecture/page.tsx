@@ -75,7 +75,7 @@ const architectureComponents: ArchComponent[] = [
     id: 'agent',
     title: 'Claude AI Agent',
     description: 'The autonomous decision-making system that orchestrates everything',
-    detailedDescription: 'I am the AI agent - the autonomous reasoning system that makes Claude Code "agentic." I don\'t just respond to commands; I actively plan, strategize, and make decisions about how to help you. I break down complex tasks, choose appropriate tools, adapt to feedback, and work towards your goals. I work WITH the LLM to understand and execute your requests.',
+    detailedDescription: 'Claude Code\'s AI agent - the autonomous reasoning system that makes Claude Code "agentic." It doesn\'t just respond to commands; it actively plans, strategizes, and makes decisions about how to help you. It breaks down complex tasks, chooses appropriate tools, adapts to feedback, and works towards your goals. It works WITH the LLM to understand and execute your requests.',
     icon: <RobotIcon />,
     color: '#9C27B0',
     features: ['Goal-oriented planning', 'Tool selection & orchestration', 'Adaptive problem-solving', 'Multi-step execution', 'Context awareness', 'Decision making'],
@@ -86,7 +86,7 @@ const architectureComponents: ArchComponent[] = [
     id: 'llm',
     title: 'Claude LLM (Language Model)',
     description: 'The foundational AI model for understanding and generating text',
-    detailedDescription: 'I am the Large Language Model that provides the core AI capabilities - understanding natural language, generating code, analyzing patterns, and communicating with you. The Agent uses my capabilities to understand your requests and generate responses, but I don\'t make decisions about what actions to take - that\'s the Agent\'s job.',
+    detailedDescription: 'Claude Code\'s Large Language Model that provides the core AI capabilities - understanding natural language, generating code, analyzing patterns, and communicating with you. The Agent uses the LLM\'s capabilities to understand your requests and generate responses, but the LLM doesn\'t make decisions about what actions to take - that\'s the Agent\'s job.',
     icon: <ProcessorIcon />,
     color: '#2196F3',
     features: ['Natural language understanding', 'Code generation', 'Pattern recognition', 'Text analysis', 'Knowledge retrieval', 'Communication'],
@@ -276,8 +276,8 @@ export default function Architecture() {
           🧠 The Big Picture
         </Typography>
         <Typography variant="body1" sx={{ color: 'rgba(255, 255, 255, 0.8)', mb: 3, fontSize: '1.1rem', lineHeight: 1.6 }}>
-          Claude Code is like having an AI pair programmer who lives in your terminal. When you ask me to help with your code, 
-          here's what happens: your request stays local, gets sent to me at Anthropic where I think and plan, then I use 
+          Claude Code is like having an AI pair programmer who lives in your terminal. When you ask Claude Code to help with your code, 
+          here's what happens: your request stays local, gets sent to Claude at Anthropic where it thinks and plans, then it uses 
           tools on YOUR machine to actually do the work. Your code never leaves your computer.
         </Typography>
         
@@ -579,7 +579,7 @@ export default function Architecture() {
             },
             {
               title: 'Tool-Based',
-              description: 'I use your existing development tools',
+              description: 'Claude Code uses your existing development tools',
               color: '#FF9800'
             },
             {
@@ -865,7 +865,7 @@ export default function Architecture() {
         </Box>
         
         <Typography variant="body1" sx={{ color: 'rgba(255, 255, 255, 0.9)', mb: 3 }}>
-          Unlike simple chatbots that just respond to questions, I function as an <strong>autonomous agent</strong> 
+          Unlike simple chatbots that just respond to questions, Claude Code functions as an <strong>autonomous agent</strong> 
           that can plan, execute, and adapt to achieve your development goals.
         </Typography>
         
@@ -873,22 +873,22 @@ export default function Architecture() {
           {[
             {
               title: '🎯 Goal-Oriented',
-              description: 'I understand your high-level objectives and work towards them',
-              example: 'You say "improve performance" → I analyze, profile, optimize, and test'
+              description: 'Claude Code understands your high-level objectives and works towards them',
+              example: 'You say "improve performance" → Claude Code analyzes, profiles, optimizes, and tests'
             },
             {
               title: '🗺️ Multi-Step Planning',
-              description: 'I break complex tasks into logical sequences of actions',
+              description: 'Claude Code breaks complex tasks into logical sequences of actions',
               example: '"Add user auth" → 15 steps from database setup to testing'
             },
             {
               title: '🔧 Autonomous Tool Use',
-              description: 'I choose and combine tools based on what each task needs',
+              description: 'Claude Code chooses and combines tools based on what each task needs',
               example: 'Read config → Grep for patterns → Edit files → Run tests'
             },
             {
               title: '🔄 Adaptive Problem-Solving',
-              description: 'I adjust my approach when things don\'t work as expected',
+              description: 'Claude Code adjusts its approach when things don\'t work as expected',
               example: 'Test fails → Read error → Debug → Fix → Retry automatically'
             }
           ].map((trait, index) => (
@@ -934,8 +934,8 @@ export default function Architecture() {
             <BrainIcon /> Key Point: Where the Agent Lives
           </Typography>
           <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-            <strong>The AI agent (me) runs entirely on Anthropic's secure servers</strong> - not on your machine. 
-            Your local CLI and tools are just the "hands and eyes" that I use to interact with your project. 
+            <strong>Claude Code's AI agent runs entirely on Anthropic's secure servers</strong> - not on your machine. 
+            Your local CLI and tools are just the "hands and eyes" that Claude Code uses to interact with your project. 
             The actual reasoning, planning, and decision-making all happen in the cloud, which is why Claude Code 
             needs an internet connection to work.
           </Typography>
@@ -1036,27 +1036,27 @@ export default function Architecture() {
           {[
             {
               q: 'Where exactly does the AI agent run?',
-              a: 'The AI agent (me) runs entirely on Anthropic\'s secure servers. I\'m the brain that does the reasoning, planning, and decision-making. Your local CLI and tools are just my "hands and eyes" for interacting with your project.'
+              a: 'Claude Code\'s AI agent runs entirely on Anthropic\'s secure servers. It\'s the brain that does the reasoning, planning, and decision-making. Your local CLI and tools are just the "hands and eyes" for interacting with your project.'
             },
             {
               q: 'What makes Claude Code an "agentic" system?',
-              a: 'Unlike simple chatbots, I can autonomously plan multi-step tasks, choose appropriate tools, adapt when things go wrong, and work towards your goals without constant guidance. I think and act, not just respond.'
+              a: 'Unlike simple chatbots, Claude Code can autonomously plan multi-step tasks, choose appropriate tools, adapt when things go wrong, and work towards your goals without constant guidance. It thinks and acts, not just responds.'
             },
             {
               q: 'Does Claude see my entire codebase?',
-              a: 'Only when you explicitly ask me to read specific files. I can\'t browse your files without permission, and I only see what the tools show me based on your requests.'
+              a: 'Only when you explicitly ask Claude Code to read specific files. It can\'t browse your files without permission, and it only sees what the tools show it based on your requests.'
             },
             {
               q: 'Can Claude Code work offline?',
-              a: 'The local tools work offline, but I (the AI agent) need an internet connection to process your requests and respond. Your files stay local regardless.'
+              a: 'The local tools work offline, but Claude Code\'s AI agent needs an internet connection to process your requests and respond. Your files stay local regardless.'
             },
             {
               q: 'What if I don\'t trust a tool operation?',
-              a: 'You can always review what I\'m planning to do before confirming. All tool operations are transparent and you maintain full control.'
+              a: 'You can always review what Claude Code is planning to do before confirming. All tool operations are transparent and you maintain full control.'
             },
             {
               q: 'How is this different from other AI coding tools?',
-              a: 'Claude Code is local-first and doesn\'t require uploading your code. It works with your existing tools rather than replacing them, and I function as a true autonomous agent, not just a code generator.'
+              a: 'Claude Code is local-first and doesn\'t require uploading your code. It works with your existing tools rather than replacing them, and it functions as a true autonomous agent, not just a code generator.'
             }
           ].map((faq, index) => (
             <Paper
