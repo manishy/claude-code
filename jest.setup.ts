@@ -23,8 +23,8 @@ jest.mock('next/navigation', () => ({
 // Mock Next.js Link with forwardRef to fix Material-UI component prop issues
 jest.mock('next/link', () => {
   const React = require('react')
-  return React.forwardRef<HTMLAnchorElement, { children: React.ReactNode; href: string; [key: string]: any }>(
-    function MockLink({ children, href, ...props }, ref) {
+  return React.forwardRef(
+    function MockLink({ children, href, ...props }: { children: React.ReactNode; href: string; [key: string]: any }, ref: React.Ref<HTMLAnchorElement>) {
       return React.createElement('a', { href, ref, ...props }, children)
     }
   )
