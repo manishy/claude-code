@@ -2,6 +2,8 @@
 
 An interactive Next.js application built to explore and demonstrate the capabilities of [Claude Code](https://claude.ai/code) - Anthropic's official CLI for AI-assisted software development.
 
+![CI](https://img.shields.io/github/actions/workflow/status/manishy/claude-code/ci.yml?branch=main&style=flat-square&logo=github&label=CI)
+![Tests](https://img.shields.io/badge/Tests-27%20Passing-28a745?style=flat-square&logo=jest)
 ![Next.js](https://img.shields.io/badge/Next.js-14.2.2-black?style=flat-square&logo=next.js)
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript)
