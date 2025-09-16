@@ -21,6 +21,7 @@ import {
   School as SchoolIcon,
   Build as BuildIcon,
   AutoAwesome as MagicIcon,
+  Compare as CompareIcon,
 } from '@mui/icons-material';
 import Link from 'next/link';
 
@@ -172,44 +173,85 @@ export default function Home() {
                     </Stack>
                   </Paper>
 
-                  <Card
-                    component={Link}
-                    href="/architecture"
-                    sx={{
-                      textDecoration: 'none',
-                      color: 'inherit',
-                      background: 'rgba(255, 255, 255, 0.02)',
-                      backdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      borderRadius: 3,
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        transform: 'translateY(-4px)',
-                        background: 'rgba(255, 255, 255, 0.05)',
-                        border: '1px solid rgba(156, 39, 176, 0.6)',
-                        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
-                      },
-                    }}
-                  >
-                    <CardContent>
-                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                        <Avatar sx={{ 
-                          width: 50, 
-                          height: 50, 
-                          background: 'linear-gradient(135deg, #9C27B0, #9C27B080)',
-                          mr: 2 
-                        }}>
-                          <ArchIcon />
-                        </Avatar>
-                        <Typography variant="h6" sx={{ color: 'white', fontWeight: 600 }}>
-                          System Architecture
+                  <Stack spacing={3}>
+                    <Card
+                      component={Link}
+                      href="/architecture"
+                      sx={{
+                        textDecoration: 'none',
+                        color: 'inherit',
+                        background: 'rgba(255, 255, 255, 0.02)',
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        borderRadius: 3,
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          transform: 'translateY(-4px)',
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          border: '1px solid rgba(156, 39, 176, 0.6)',
+                          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+                        },
+                      }}
+                    >
+                      <CardContent>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                          <Avatar sx={{ 
+                            width: 50, 
+                            height: 50, 
+                            background: 'linear-gradient(135deg, #9C27B0, #9C27B080)',
+                            mr: 2 
+                          }}>
+                            <ArchIcon />
+                          </Avatar>
+                          <Typography variant="h6" sx={{ color: 'white', fontWeight: 600 }}>
+                            Claude Code Architecture
+                          </Typography>
+                        </Box>
+                        <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                          Interactive visualization of how Claude Code works - the agentic AI system that autonomously plans and executes development tasks.
                         </Typography>
-                      </Box>
-                      <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                        Interactive visualization of how Claude Code works - from CLI to AI to your local development environment.
-                      </Typography>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+
+                    <Card
+                      component={Link}
+                      href="/copilot-architecture"
+                      sx={{
+                        textDecoration: 'none',
+                        color: 'inherit',
+                        background: 'rgba(255, 255, 255, 0.02)',
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        borderRadius: 3,
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          transform: 'translateY(-4px)',
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          border: '1px solid rgba(0, 112, 243, 0.6)',
+                          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+                        },
+                      }}
+                    >
+                      <CardContent>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                          <Avatar sx={{ 
+                            width: 50, 
+                            height: 50, 
+                            background: 'linear-gradient(135deg, #0070f3, #0070f380)',
+                            mr: 2 
+                          }}>
+                            <CompareIcon />
+                          </Avatar>
+                          <Typography variant="h6" sx={{ color: 'white', fontWeight: 600 }}>
+                            GitHub Copilot Architecture
+                          </Typography>
+                        </Box>
+                        <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                          Understanding the non-agentic approach - how suggestion-based AI coding assistants like Copilot work differently.
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Stack>
                 </Box>
               </Box>
 
