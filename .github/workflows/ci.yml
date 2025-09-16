@@ -60,7 +60,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify build succeeds
+      - name: Build application
         run: npm run build
 
       - name: Verify build output
@@ -69,4 +69,11 @@ jobs:
             echo "Build output directory './out' not found"
             exit 1
           fi
-          echo "Build verification successful"
+          echo "Build verification successful - $(ls -la ./out | wc -l) files generated"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: ./out/
+          retention-days: 1
