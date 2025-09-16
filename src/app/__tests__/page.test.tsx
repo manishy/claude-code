@@ -24,7 +24,8 @@ describe('Home Page', () => {
 
   test('renders navigation links', () => {
     renderWithTheme(<Home />)
-    expect(screen.getByRole('link', { name: /system architecture/i })).toHaveAttribute('href', '/architecture')
+    expect(screen.getByRole('link', { name: /claude code architecture/i })).toHaveAttribute('href', '/architecture')
+    expect(screen.getByRole('link', { name: /github copilot architecture/i })).toHaveAttribute('href', '/copilot-architecture')
     expect(screen.getByRole('link', { name: /tic tac toe/i })).toHaveAttribute('href', '/tic-tac-toe')
     expect(screen.getByRole('link', { name: /pong game/i })).toHaveAttribute('href', '/pong')
   })
